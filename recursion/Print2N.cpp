@@ -12,17 +12,22 @@ void print2nVersion1(int n)
     }
 }
 
+void printN(int n)
+{
+    printf("%d ", n);
+}
+
 /*Ver2: print with recursion*/
 void print2nVersion2(int n)
 {
     // print n...3,2,1
-    //printf("%d ", n);
+    //printN(n);
     if (n > 1) {
         print2nVersion2(n-1);
     }
 
     // print 1,2,3...n
-    printf("%d ", n);
+    printN(n);
 }
 
 /*Ver3: print with reference counting*/
