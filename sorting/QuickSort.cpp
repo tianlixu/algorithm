@@ -12,27 +12,29 @@ void printArray(int a[], unsigned int len)
 /*
   3 2 5 8 1 9 4
     ^     ^   ^
-    j     i   |high
+    i     j   |high
 */
- 
+
 // return the index of pivot
 int partition(int a[], int low, int high)
 {
-    // index for the last element in the smaller array
-    int j = low-1;
- 
-    for (int i=low; i<=high-1; ++i) {
-        if (a[i] < a[high]) { // a[high] is the pivot
-            std::swap(a[i], a[++j]);
+    // a[high] is the pivot
+    int pivot = a[high];
+    // index for the last element in the smaller subarray
+    int i = low-1;
+
+    for (int j=low; j<=high-1; ++j) {
+        if (a[j] <= pivot) { 
+            std::swap(a[++i], a[j]);
         }
         printArray(a, high-low+1);
     }
  
-    std::swap(a[++j], a[high]);
+    std::swap(a[++i], a[high]);
  
-    cout << "after partition: ";
+    cout << "after partitioning: ";
     printArray(a, high-low+1);
-    return j;
+    return i;
 }
  
  
@@ -52,8 +54,13 @@ int main()
     int a[] = {5, 3, 2, 8, 1, 9, 4};
     //int a[] = {2, 3, 4, 5, 6, 2};
     int length = sizeof(a) / sizeof(a[0]);
- 
+
+    printf("The original arry is:\n");
     printArray(a, length);
+
+    printf("Now, quick sort array:\n");
     quickSort(a, 0, length-1);
+
+    printf("The array after sorting:\n");
     printArray(a, length);
 }
