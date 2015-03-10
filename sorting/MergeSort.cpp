@@ -1,5 +1,7 @@
+#include <limits.h>
 #include <string.h>
 #include <iostream>
+
 using namespace std;
 
 void printArray(int a[], unsigned int len)
@@ -15,14 +17,14 @@ void merge(int a[], int low, int mid, int high)
     int lenL = mid - low + 1; // length of left array a[low....mid]
     int lenR = high - mid; // length of right array a[mid+1....high]
 
-    int *L = new int(lenL + 1);
-    int *R = new int(lenR + 1);
-    memcpy(L, a, lenL);
+    int *L = new int[lenL + 1];
+    int *R = new int[lenR + 1];
+    memcpy(L, a+low, lenL * sizeof(int));
     L[lenL] = INT_MAX;
-    memcpy(R, a + mid, lenR);
+    memcpy(R, a + mid + 1 , lenR * sizeof(int));
     R[lenR] = INT_MAX;
 
-    for (int i=1, j=1, k=low; k<= high; k++) {
+    for (int i=0, j=0, k=low; k <= high; k++) {
         if (L[i] <= R[j]) {
             a[k] = L[i];
             ++ i;
@@ -36,8 +38,6 @@ void merge(int a[], int low, int mid, int high)
     delete [] R;
 }
 
-
-/// Select the smallest(largest) element
 void mergeSort(int a[], int low, int high)
 {
     if (low >= high)
@@ -63,4 +63,3 @@ int main()
     mergeSort(a, 0, length-1);
     printArray(a, length);
 }
-
