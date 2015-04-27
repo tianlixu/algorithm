@@ -17,7 +17,7 @@ void printArray(int a[], unsigned int len)
  *
  * Running time insensitive to input: Quadratic time, even if input is sorted.
  *
- * Data movements is miniral: Linear number of exchanges.
+ * Data movements is minimal: Linear number of exchanges.
  */
 void selectionSort(int a[], int n)
 {
@@ -68,7 +68,8 @@ int main()
     int length = sizeof(a) / sizeof(a[0]);
 
     printArray(a, length);
-    selectionSort2(a, length);
+    //selectionSort2(a, length);
+    selectionSort(a, length);
     printArray(a, length);
 }
 
