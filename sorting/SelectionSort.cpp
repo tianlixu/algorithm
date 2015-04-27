@@ -9,13 +9,22 @@ void printArray(int a[], unsigned int len)
     cout << endl;
 }
 
-/// Select the smallest(largest) element
+/**
+ * Select the smallest(largest) element and exchange its position.
+ *
+ * Proposition: Selection sort uses (N-1) + (N-2) + ... + 1 + 0 ~ N^2/2 compares
+ * and N exchanges
+ *
+ * Running time insensitive to input: Quadratic time, even if input is sorted.
+ *
+ * Data movements is miniral: Linear number of exchanges.
+ */
 void selectionSort(int a[], int n)
 {
-    for (int i=0; i<=n-2; ++i) {
+    for (int i=0; i<n; ++i) {
         int min = i;
         
-        for (int j=i+1; j<=n-1; ++j) {
+        for (int j=i+1; j<n; ++j) {
             if (a[j] < a[min]) {
                 min = j;
             }
