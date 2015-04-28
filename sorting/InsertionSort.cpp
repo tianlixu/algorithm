@@ -26,7 +26,7 @@ void printArray(int a[], unsigned int len)
 void insertionSort(int a[], int n)
 {
     // 1. Move the pointer to the right
-    for (int i=0; i<n; ++i) {
+    for (int i=1; i<n; ++i) {
         // 2. Moving from right to left, exchange a[i] with each larger entry to its left
         for (int j=i; j>0; --j) {
             if (a[j] < a[j-1])
@@ -39,8 +39,8 @@ void insertionSort(int a[], int n)
 
 int main()
 {
-    //int a[] = {5, 3, 2, 8, 1, 9, 4};
-    int a[] = {2, 3, 4, 5, 6, 2};
+    int a[] = {5, 3, 2, 8, 1, 9, 4};
+    //int a[] = {2, 3, 4, 5, 6, 2};
     int length = sizeof(a) / sizeof(a[0]);
 
     printArray(a, length);
