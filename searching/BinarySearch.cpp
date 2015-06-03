@@ -3,6 +3,7 @@ using namespace std;
 
 /*
  * Recursive solution
+ * Time: O(lgn)
  *
  * a[] = {1, 3, 5, 7, 9};
  */
@@ -23,6 +24,7 @@ int binarySearch(int a[], int low, int high, int target)
 
 /*
  * Iterative solution
+ * Time: O(lgn)
  */
 int binarySearch2(int a[], int low, int high, int target)
 {
