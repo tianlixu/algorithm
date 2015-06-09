@@ -12,16 +12,25 @@ void printArray(int a[], unsigned int len)
 
 /*
   3 2 5 8 1 9 4
-    ^     ^   ^
-    i     j   |high
-*/
+  ^     ^   ^
+  i     j   |high
 
-// return the index of pivot
+  -->
+
+  3 2 1 4 5 8 9
+  |i, pivot
+
+  the left is the smaller
+  the right is the larger
+
+  return the index of pivot
+*/
 int partition(int a[], int low, int high)
 {
-    // a[high] is the pivot
+    // select a[high] as pivot
     int pivot = a[high];
-    // index for the last element in the smaller subarray
+
+    // index for the 1st element in the smaller subarray
     int i = low-1;
 
     for (int j=low; j<=high-1; ++j) {
@@ -49,12 +58,17 @@ void quickSort(int a[], int low, int high)
     quickSort(a, index+1, high);
 }
 
+
+
 /// Radomized quicksort
 int random(int min, int max)
 {
     return (std::rand() % (max - min + 1) + min);
 }
 
+/*
+ * select the pivot randomly and then swap with a[high]
+ */
 int randomizedPartition(int a[], int low, int high)
 {
     std::srand(time(0));

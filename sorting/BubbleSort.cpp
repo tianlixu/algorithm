@@ -9,6 +9,11 @@ void printArray(int a[], int length)
 	cout << endl;
 }
 
+/*
+ * http://tlxu.blogspot.ca/2014/12/bubble-sort.html
+ * 
+ * Time: O(n^2)
+ */
 void bubbleSort(int a[], int n)
 {
     int comparisons = 0;
