@@ -31,8 +31,30 @@ public:
     }
 
     /*
-     * Time: Average O(nlgn), worst O(n^2)
-     */
+     * http://en.wikipedia.org/wiki/Selection_algorithm
+     *
+     * Time: O(n)
+
+     The idea for the randomized algorithm is to notice that in Randomized-Quicksort, after the partitioning
+     step we can tell which subarray has the item we are looking for, just by looking at their
+     sizes. So, we only need to recursively examine one subarray, not two. For instance, if we are
+     looking for the 87th-smallest element in our array, and after partitioning the “LESS” subarray (of
+     elements less than the pivot) has size 200, then we just need to find the 87th smallest element
+     in LESS. On the other hand, if the “LESS” subarray has size 40, then we just need to find the
+     87−40−1 = 46th smallest element in GREATER. (And if the “LESS” subarray has size exactly 86
+     then we just return the pivot). One might at first think that allowing the algorithm to only recurse
+     on one subarray rather than two would just cut down time by a factor of 2. However, since this
+     is occuring recursively, it compounds the savings and we end up with Θ(n) rather than Θ(n log n)
+     time. This algorithm is often called Randomized-Select, or QuickSelect.
+
+     QuickSelect: Given array A of size n and integer k ≤ n,
+     1. Pick a pivot element p at random from A.
+     2. Split A into subarrays LESS and GREATER by comparing each element to p as in
+     Quicksort. While we are at it, count the number L of elements going in to LESS.
+     3. (a) If L = k − 1, then output p.
+     (b) If L > k − 1, output QuickSelect(LESS, k).
+     (c) If L < k − 1, output QuickSelect(GREATER, k − L − 1)
+    */
     int findMedianQuickSelect(int A[], int low, int high, int kth) {
         // index of pivot
         int index = partition(A, low, high);
@@ -48,7 +70,7 @@ public:
     }
 
     /*
-      the same partition as that in QuickSort
+      the same partition as that in QuickSort, performance can be improved by using the Randomized-Partition 
 
       3 2 5 8 1 9 4
       ^     ^   ^
