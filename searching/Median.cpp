@@ -86,25 +86,32 @@ public:
 
       return the index of pivot
     */
-    int partition(int a[], int low, int high)
-        {
-            // select a[high] as pivot
-            int pivot = a[high];
+    int partition(int a[], int low, int high) {
+        // select a[high] as pivot
+        int pivot = a[high];
 
-            // index for the 1st element in the smaller subarray
-            int i = low-1;
+        // index for the 1st element in the smaller subarray
+        int i = low-1;
 
-            for (int j=low; j<=high-1; ++j) {
-                if (a[j] <= pivot) { 
-                    std::swap(a[++i], a[j]);
-                }
+        for (int j=low; j<=high-1; ++j) {
+            if (a[j] <= pivot) { 
+                std::swap(a[++i], a[j]);
             }
+        }
  
-            std::swap(a[++i], a[high]);
+        std::swap(a[++i], a[high]);
  
-            return i;
-        }    
-     
+        return i;
+    }    
+
+
+
+
+    /*
+     * Heap solution.
+     * The best to find the stream median.
+     */
+    
     int findMedian2(int A[], int n) {
         int mid = n/2 + n%2;
         return findKthNumberMinHeap(A, n, mid);
@@ -154,6 +161,12 @@ public:
 
         return minHeap.top();
     }
+
+    /*
+     * with selectSort @SelectionSort.cpp
+     * select kth time
+     */
+    
 };
 
 int main()
