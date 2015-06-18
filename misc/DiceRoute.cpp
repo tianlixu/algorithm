@@ -1,12 +1,9 @@
-//
-//  DiceDemo: Find a route for a given sum. To Be Finished...
+/*
+ DiceDemo: Find a route for a given sum. To Be Finished...
 //
 //  Created by FOS on 2015-06-07.
 //  Copyright (c) 2015 FOS. All rights reserved.
 //
-
-#include <iostream>
-
 
 
 #include <iostream>
@@ -14,11 +11,11 @@
 using namespace std;
 
 enum Direction {
-    ROLL_RIGHT,
-    ROLL_LEFT,
-    ROLL_UP,
-    ROLL_DOWN,
-    ROLL_NONE
+    ROLL_NONE = 0,    
+    ROLL_RIGHT = 1,
+    ROLL_LEFT = -1,
+    ROLL_UP = 2,
+    ROLL_DOWN = -2,
 };
 
 /*
@@ -40,6 +37,25 @@ public:
     int getBottom() {
         return SEVEN - top;
     }
+
+    int roll(Direction direction) {
+        switch (direction) {
+        case ROLL_RIGHT:
+            rollLeft();
+            break;
+        case ROLL_LEFT:
+            rollRight();
+            break;
+        case ROLL_UP:
+            rollDown();
+            break;
+        case ROLL_DOWN:
+            rollUp();
+        default:
+            break;
+        }
+    }
+
     
     int rollRight() {
         int bottom = right;
@@ -78,25 +94,9 @@ public:
     }
     
     // undo last rolling
-    void rollBack() {
-        switch (direction) {
-            case ROLL_RIGHT:
-                rollLeft();
-                break;
-            case ROLL_LEFT:
-                rollRight();
-                break;
-            case ROLL_UP:
-                rollDown();
-                break;
-            case ROLL_DOWN:
-                rollUp();
-                break;
-            default:
-                break;
-        }
-        
-        direction = ROLL_NONE;
+    void rollBack(Direction direction) {
+        Direction oppositte = 0 - direction;
+        roll(oppositte);
     }
     
     void testRolling() {
@@ -251,6 +251,7 @@ public:
             
             cout << "(" << p.x <<"," << p.y <<")" << " ";
         }
+        cout << endl;
     }
     
     

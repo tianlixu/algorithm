@@ -38,6 +38,10 @@ void merge(int a[], int low, int mid, int high)
     delete [] R;
 }
 
+/*
+ * 3 steps: sort left, sort right, then merge
+ * should be called sortMerge?!
+ */
 void mergeSort(int a[], int low, int high)
 {
     if (low >= high)
