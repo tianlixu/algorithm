@@ -1,22 +1,31 @@
-/*
- DiceDemo: Find a route for a given sum. To Be Finished...
 //
 //  Created by FOS on 2015-06-07.
 //  Copyright (c) 2015 FOS. All rights reserved.
 //
-
+//  DiceDemo: Find a route for a given sum. To Be Finished...
+//  one cell can not be enterned twice for a given route.
 
 #include <iostream>
 #include <stack>
+#include <string.h>
+
 using namespace std;
 
+
 enum Direction {
-    ROLL_NONE = 0,    
+    ROLL_NONE  = 0,    
     ROLL_RIGHT = 1,
-    ROLL_LEFT = -1,
-    ROLL_UP = 2,
-    ROLL_DOWN = -2,
+    ROLL_LEFT  = -1,
+    ROLL_UP    = 2,
+    ROLL_DOWN  = -2,
 };
+
+enum DirectionAttr {
+    TRIED,        // has been tried
+    TO_BE_TRIED,  // to be tried
+    FROM          // entered from this side
+};
+
 
 /*
  * Roll the dice and get the value (of bottom)
@@ -27,8 +36,6 @@ public:
         this->top = top;
         this->front = front;
         this->right = right;
-        
-        this->direction = ROLL_NONE;
     }
     ~Dice() {
         
@@ -39,6 +46,24 @@ public:
     }
 
     int roll(Direction direction) {
+        switch (direction) {
+        case ROLL_RIGHT:
+            rollRight();
+            break;
+        case ROLL_LEFT:
+            rollLeft();
+            break;
+        case ROLL_UP:
+            rollUp();
+            break;
+        case ROLL_DOWN:
+            rollDown();
+        default:
+            break;
+        }
+    }
+
+    int undo(Direction direction) {
         switch (direction) {
         case ROLL_RIGHT:
             rollLeft();
@@ -54,14 +79,12 @@ public:
         default:
             break;
         }
-    }
+    }    
 
-    
     int rollRight() {
         int bottom = right;
         right = top;
         top = SEVEN - bottom;
-        direction = ROLL_RIGHT;
         
         return bottom;
     }
@@ -70,7 +93,6 @@ public:
         int bottom = SEVEN - right;
         right = SEVEN - top;
         top = SEVEN - bottom;
-        direction = ROLL_LEFT;
         
         return bottom;
     }
@@ -79,7 +101,6 @@ public:
         int bottom = SEVEN - front; // back -> bottom
         front = SEVEN - top; // bottom -> front
         top = SEVEN - bottom;
-        direction = ROLL_UP;
         
         return bottom;
     }
@@ -88,43 +109,8 @@ public:
         int bottom = front; // front -> bottom
         front = top;
         top = SEVEN - bottom;
-        direction = ROLL_DOWN;
         
         return bottom;
-    }
-    
-    // undo last rolling
-    void rollBack(Direction direction) {
-        Direction oppositte = 0 - direction;
-        roll(oppositte);
-    }
-    
-    void testRolling() {
-        cout << "Test rolling..." <<endl;
-        cout << "Rolling right: ";
-        for (int i=0; i<12; i++) {
-            cout << rollRight() <<" ";
-        }
-        cout <<endl;
-        
-        cout << "Rolling left: ";
-        for (int i=0; i<12; i++) {
-            cout << rollLeft() <<" ";
-        }
-        cout <<endl;
-        
-        
-        cout << "Rolling up: ";
-        for (int i=0; i<12; i++) {
-            cout << rollUp() <<" ";
-        }
-        cout <<endl;
-        
-        cout << "Rolling down: ";
-        for (int i=0; i<12; i++) {
-            cout << rollDown() <<" ";
-        }
-        cout <<endl;
     }
     
 private:
@@ -132,12 +118,11 @@ private:
     int front;
     int right;
     
-    Direction direction;
     static const int SEVEN = 7;
 };
 
 
-struct Point{
+struct Point {
     Point() {
         Point(0, 0);
     }
@@ -151,46 +136,64 @@ struct Point{
     int y;
 };
 
+struct Cell {
+    Cell() {
+        upAttr = TO_BE_TRIED;
+        downAttr = TO_BE_TRIED;
+        leftAttr = TO_BE_TRIED;
+        rightAttr = TO_BE_TRIED;
+    }
+
+    int value;
+    Point point;
+    DirectionAttr upAttr;
+    DirectionAttr downAttr;
+    DirectionAttr leftAttr;
+    DirectionAttr rightAttr;    
+};
+
 class Board {
 public:
     Board() {
         // init cell as 0s
-        memset(cell, 0, sizeof(cell));
     }
     
     void setCell(Point &p, int value) {
-        cell[p.x][p.y] = value;
+        cells[p.x][p.y] = value;
     }
     
     int getCell(Point &p) {
         return cell[p.x][p.y];
     }
+
+    bool isCellSet(Point &p) {
+        return 0 != getCell(p);
+    }
     
     bool canRollRight(Point &p) {
-        // for a given cell need to set 4 bool values to in
-        // cell.fromRight is ture
-        // cell.fromLeft
-        // cell.fromUp
-        // cell.fromDown
-        return (p.x+1 < N && cell[p.x+1][p.y] == 0);
+        return ( (!isCellSet(p)) &&
+                 (p.x+1 < N && cell[p.x+1][p.y] == 0) );
     }
     
     bool canRollLeft(Point &p) {
-        return (p.x-1 >= 0 && cell[p.x-1][p.y] == 0);
+        return ( (!isCellSet(p)) &&        
+                 (p.x-1 >= 0 && cell[p.x-1][p.y] == 0) );
     }
     
     bool canRollUp(Point &p) {
-        return (p.y+1 < N && cell[p.x][p.y+1] == 0);
+        return ( (!isCellSet(p)) &&
+                 (p.y+1 < N && cell[p.x][p.y+1] == 0) );
     }
     
     bool canRollDown(Point &p) {
-        return (p.y-1 >=0 && cell[p.x][p.y-1] ==0);
+        return ( (!isCellSet(p)) &&
+                 (p.y-1 >=0 && cell[p.x][p.y-1] ==0) );
     }
     
 private:
     static const int N = 20;
     
-    int cell[N][N];
+    Cell cells[N][N];
 };
 
 
@@ -223,9 +226,9 @@ public:
             if (sum > 0 && canRoll()) {
                 roll();
             } else {
-                // recover sum, pop stack
+                // recover sum, pop stack, dice and cell
                 sum += board.getCell(p);
-                dice.rollBack();
+                dice.undo();
                 route.pop();
                 position = route.top();
                 
@@ -301,6 +304,7 @@ public:
     }
     
     bool canRollRight() {
+        // right cell is not set and it is till in board
         return board.canRollRight(position);
     }
     
