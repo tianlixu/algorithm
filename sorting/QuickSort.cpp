@@ -11,6 +11,12 @@ void printArray(int a[], unsigned int len)
 
 
 /*
+ * Average: O(NlogN), worst: O(N^2).
+ * O(logN) stack space
+ */
+
+
+/*
   3 2 5 8 1 9 4
   ^     ^   ^
   i     j   |high

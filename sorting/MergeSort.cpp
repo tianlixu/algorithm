@@ -12,6 +12,9 @@ void printArray(int a[], unsigned int len)
     cout << endl;
 }
 
+/*
+It's O(n * log(n)), not O(log(n)). As you've accurately surmised, the entire input must be iterated through, and this must occur O(log(n)) times (the input can only be halved O(log(n)) times). n items iterated log(n) times gives O(n log(n)).
+*/          
 void merge(int a[], int low, int mid, int high)
 {
     int lenL = mid - low + 1; // length of left array a[low....mid]
